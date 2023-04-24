@@ -1,0 +1,24 @@
+main.container {
+  padding: 30px 30px;
+}
+
+.navbar {
+  padding: 10px 10px;
+}
+
+h1 {
+  text-align: center;
+}
+
+#myChart {
+  overflow-x: scroll;
+}
+
+#planetInfo {
+  position: absolute;
+  background: white;
+  border: 1px solid black;
+  top: 300px;
+  right: 100px;
+  padding: 50px;
+}
