@@ -9,6 +9,18 @@ var div = d3.select("body").append("div")
   .attr("class", "tooltip")
   .style("opacity", 0);
 
+
+
+const svgLine = d3.select('#svgline')
+
+svgLine.append('line')
+  .style('stroke', 'black')
+  .style('stroke-width', 10)
+  .attr("x1", 0)
+  .attr("y1", 150)
+  .attr("x2", 200)
+  .attr("y2", 150); 
+
 d3.csv("data/habitable_exoplanets.csv").then(planets => {
   // create the circles from the apples array
 

@@ -23,6 +23,11 @@ h1 {
   padding: 50px;
 }
 
+#svgline {
+  position: absolute;
+  top: 300px;
+}
+
 div.tooltip {
   position: absolute;
   white-space: pre-wrap;
@@ -36,3 +41,4 @@ div.tooltip {
   border-radius: 8px;
   pointer-events: none;
 }
+
