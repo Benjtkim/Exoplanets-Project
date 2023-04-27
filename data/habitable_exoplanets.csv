@@ -1,4 +1,4 @@
-name,distance,planet_type,discovery_year,mass (kg),radius (miles)
+name,distance,planet_type,discovery_year,mass,radius 
 K2-288 B b,214.0,Super Earth,2018,8.105015099999999e+27,82537.9
 K2-332 b,402.0,Neptune-like,2016,1.0401752400000002e+28,95570.20000000001
 K2-72 e,217.0,Super Earth,2016,4.1948673e+27,56038.89

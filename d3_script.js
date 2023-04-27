@@ -1,51 +1,45 @@
 let svgW = 10000;
 let svgH = 800;
 
-let svg = d3.select("#myPlanet").append("svg");
+let svg = d3.select("#myChart").append("svg");
 svg.attr("width", svgW);
 svg.attr("height", svgH);
 
-var Tooltip = d3.select("#myPlanet")
-  .append("div")
-  .style("opacity", 0)
+var div = d3.select("body").append("div")
   .attr("class", "tooltip")
-  .style("background-color", "white")
-  .style("border", "solid")
-  .style("border-width", "2px")
-  .style("border-radius", "5px")
-  .style("padding", "5px")
+  .style("opacity", 0);
 
 d3.csv("data/habitable_exoplanets.csv").then(planets => {
   // create the circles from the apples array
 
   console.log("max light years: ", d3.max(planets.map(planet => planet.distance)));
-  
+
   svg.selectAll()
     .data(planets)
     .enter()
     .append("circle")
     .attr("fill", "red")
-    .attr("cx", function(d) { return d.distance*30; })
-    .attr("cy", function(d, i) { return 20+Math.random()*(svgH-10) })
+    .attr("cx", function(d) { return d.distance * 50; })
+    .attr("cy", function(d, i) { return 20 + Math.random() * (svgH - 20) })
     .attr("r", function(d) { return 10; })
-
-    .on('mouseenter', function (d) {
+    .on("mouseover", function(event, d) {
+      console.log(d);
       d3.select(this).attr("stroke", "blue");
-      d3.select('#myPlanet').html(d.properties.name);
-      Tooltip.style("opacity", 1)
-      d3.select(this)
-      d3.style("stroke", "black")
-      d3.style("opacity", 1)
+      div.transition()
+        .duration(200)
+        .style("opacity", .9);
+      // div.html(formatTime(d.date) + "<br/>" + d.close)
+      div.html("Name: "+ d.name + "\nDistance (l.y.): "+ d.distance + "\nPlanet Type: " + d.planet_type + "\nDiscovery Year: " + 
+      d.discovery_year + "\nMass (kg): " + d.mass + "\nRadius (mil): " + d.radius)
+        .style("left", (event.pageX) + "px")
+        .style("top", (event.pageY - 28) + "px");
     })
-
-    .on('mouseleave', function (d) {
+    .on("mouseout", function(d) {
       d3.select(this).attr("stroke", "none")
-      d3.select(this).html(d.properties.name)
-      Tooltip.style("opacity", 0)
-      d3.select(this)
-      d3.style("stroke", "none")
-      d3.style("opacity", 0.8)
-  })
+      div.transition()
+        .duration(500)
+        .style("opacity", 0);
+    });
 });
 
 
