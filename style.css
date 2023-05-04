@@ -10,8 +10,14 @@ h1 {
   text-align: center;
 }
 
+body {
+  overflow-y: hidden;
+}
+
 #myChart {
   overflow-x: scroll;
+  background: url('https://raw.githubusercontent.com/Benjtkim/Exoplanets-Project/main/data/e55da3c857cfaf7cb3cd06eca6942038.jpg') no-repeat;
+  background-size: cover;
 }
 
 #planetInfo {
@@ -21,11 +27,7 @@ h1 {
   top: 300px;
   right: 100px;
   padding: 50px;
-}
-
-#svgline {
-  position: absolute;
-  top: 300px;
+  
 }
 
 div.tooltip {
@@ -41,4 +43,3 @@ div.tooltip {
   border-radius: 8px;
   pointer-events: none;
 }
-
