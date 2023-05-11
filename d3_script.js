@@ -1,50 +1,103 @@
-let svgW = 50000;
+let svgW = 49850;
 let svgH = 550;
-let previousCoordinate = -1000;
+let lightYears = [];
 
-let svg = d3.select("#myChart").append("svg");
-svg.attr("width", svgW);
-svg.attr("height", svgH);
+for (let i = 1; i <= 9; i++ ) {
+  lightYears.push(500 * i);
+};
+
+let svg = d3.select("#myChart").append("svg")
+svg.attr("width", svgW)
+svg.attr("height", svgH)
 
 var div = d3.select("body").append("div")
   .attr("class", "tooltip")
-  .style("opacity", 0);
-
+  .style("opacity", 0)
 
 svg.append('line')
   .style('stroke', 'white')
   .style('stroke-width', 10)
-  .attr("x1", 50)
+  .attr("x1", 10)
   .attr("y1", 500)
-  .attr("x2", 9600)
+  .attr("x2", 49800)
   .attr("y2", 500)
 
-d3.csv("data/habitable_exoplanets.csv").then(planets => {
-  // create the circles from the apples array
+svg.selectAll("text")
+  .data(lightYears)
+  .enter()
+  .append("text")
+  .attr("x", (data) => data * 9.98)
+  .attr("y", 515)
+  .attr('stroke', 'white')
+  .attr('fill', 'white')
+  .style('font-size', 10)
+  .text(function (data) {
+    return data;
+  });
 
-  console.log("max light years: ", d3.max(planets.map(planet => planet.distance)));
+svg.append('text')
+  .attr('x', 10)
+  .attr('y', 515)
+  .attr('stroke', 'white')
+  .attr('fill', 'white')
+  .style('font-size', 10)
+  .text(0)
+
+
+svg.append('text')
+  .attr('x', 10)
+  .attr('y', 490)
+  .attr('stroke', 'white')
+  .attr('fill', 'white')
+  .style('font-size', 10)
+  .text('Lightyears (l.y.)')
+
+svg.append('text')
+  .attr('x', 24910)
+  .attr('y', 515)
+  .attr('stroke', 'white')
+  .attr('fill', 'white')
+  .style('font-size', 10)
+  .text(2488)
+
+svg.append('text')
+  .attr('x', 49652)
+  .attr('y', 515)
+  .attr('stroke', 'white')
+  .attr('fill', 'white')
+  .style('font-size', 10)
+  .text(4976)
+
+d3.csv("data/habitable_exoplanets.csv").then(planets => {
+
+  var defs = svg.append("defs");
+
+  var filter = defs.append("filter")
+    .attr("id","glow");
+  filter.append("feGaussianBlur")
+    .attr("stdDeviation", function(d) {return d.stellar_magnitude})
+    .attr("result","coloredBlur");
+  var feMerge = filter.append("feMerge");
+  feMerge.append("feMergeNode")
+    .attr("in","coloredBlur");
+  feMerge.append("feMergeNode")
+    .attr("in","SourceGraphic");
 
   svg.selectAll()
     .data(planets)
     .enter()
     .append("circle")
     .attr("fill", "red")
-    .attr("cx", function(d) {return d.distance * 10;})
-    .attr("cy", function(d, i) {
-      let yCoordinate = 100 + Math.random() * 300
-      while (previousCoordinate - 200 < yCoordinate && yCoordinate < previousCoordinate + 200) {
-        yCoordinate = 100 + Math.random() * 300
-      }
-      previousCoordinate = yCoordinate;
-      return yCoordinate})
-    .attr("r", function(d) { return 10; })
+    .attr("cx", function(d) {return d.distance * 9.98;})
+    .attr("cy", function(d, i) { return ((i * 50) % 400) + 100 })
+    .attr("r", function(d) { return d.radius / 5000; })
+    .style("filter", "url(#glow)")
     .on("mouseover", function(event, d) {
       console.log(d);
       d3.select(this).attr("stroke", "blue");
       div.transition()
         .duration(200)
         .style("opacity", .9);
-      // div.html(formatTime(d.date) + "<br/>" + d.close)
       div.html("Name: "+ d.name + "\nDistance (l.y.): "+ d.distance + "\nPlanet Type: " + d.planet_type + "\nDiscovery Year: " + 
       d.discovery_year + "\nMass (kg): " + d.mass + "\nRadius (mil): " + d.radius)
         .style("left", (event.pageX) + "px")
@@ -55,5 +108,8 @@ d3.csv("data/habitable_exoplanets.csv").then(planets => {
       div.transition()
         .duration(500)
         .style("opacity", 0);
-    });
+    })
 });
+
+
+
