@@ -68,29 +68,30 @@ svg.append('text')
   .style('font-size', 10)
   .text(4976)
 
+//I got the code for the glow from https://www.visualcinnamon.com/2016/06/glow-filter-d3-visualization/
+var defs = svg.append("defs");
+var filter = defs.append("filter")
+  .attr("id","glow");
+filter.append("feGaussianBlur")
+  .attr("stdDeviation", 10)
+  .attr("result","coloredBlur");
+var feMerge = filter.append("feMerge");
+feMerge.append("feMergeNode")
+  .attr("in","coloredBlur");
+feMerge.append("feMergeNode")
+  .attr("in","SourceGraphic")
+
 d3.csv("data/habitable_exoplanets.csv").then(planets => {
-
-  var defs = svg.append("defs");
-
-  var filter = defs.append("filter")
-    .attr("id","glow");
-  filter.append("feGaussianBlur")
-    .attr("stdDeviation", function(d) {return d.stellar_magnitude})
-    .attr("result","coloredBlur");
-  var feMerge = filter.append("feMerge");
-  feMerge.append("feMergeNode")
-    .attr("in","coloredBlur");
-  feMerge.append("feMergeNode")
-    .attr("in","SourceGraphic");
-
   svg.selectAll()
     .data(planets)
+
+
     .enter()
     .append("circle")
     .attr("fill", "red")
-    .attr("cx", function(d) {return d.distance * 9.98;})
+    .attr("cx", function(d) { return d.distance * 9.98 })
     .attr("cy", function(d, i) { return ((i * 50) % 400) + 100 })
-    .attr("r", function(d) { return d.radius / 5000; })
+    .attr("r", function(d) { return d.radius / 5000 })
     .style("filter", "url(#glow)")
     .on("mouseover", function(event, d) {
       console.log(d);
