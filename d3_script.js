@@ -1,5 +1,5 @@
 let svgW = 49850;
-let svgH = 550;
+let svgH = window.innerHeight;
 let lightYears = [];
 
 for (let i = 1; i <= 9; i++ ) {
