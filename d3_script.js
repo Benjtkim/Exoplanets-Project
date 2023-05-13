@@ -2,7 +2,7 @@ let svgW = 49850;
 let svgH = window.innerHeight;
 let lightYears = [];
 
-for (let i = 1; i <= 9; i++ ) {
+for (let i = 1; i <= 9; i++) {
   lightYears.push(500 * i);
 };
 
@@ -71,15 +71,15 @@ svg.append('text')
 //I got the code for the glow from https://www.visualcinnamon.com/2016/06/glow-filter-d3-visualization/
 var defs = svg.append("defs");
 var filter = defs.append("filter")
-  .attr("id","glow");
+  .attr("id", "glow");
 filter.append("feGaussianBlur")
   .attr("stdDeviation", 10)
-  .attr("result","coloredBlur");
+  .attr("result", "coloredBlur");
 var feMerge = filter.append("feMerge");
 feMerge.append("feMergeNode")
-  .attr("in","coloredBlur");
+  .attr("in", "coloredBlur");
 feMerge.append("feMergeNode")
-  .attr("in","SourceGraphic")
+  .attr("in", "SourceGraphic")
 
 d3.csv("data/habitable_exoplanets.csv").then(planets => {
   svg.selectAll()
@@ -89,23 +89,23 @@ d3.csv("data/habitable_exoplanets.csv").then(planets => {
     // .append("circle")
     .attr("xlink:href", "data/planet.png")
     .attr("fill", "red")
-    .attr("x", function(d) { return d.distance * 9.98 })
-    .attr("y", function(d, i) { return ((i * 50) % 400) + 100 })
-    .attr("width", function(d) { return d.radius / 2000 })
-    .attr("height", function(d) { return d.radius / 2000 })
+    .attr("x", function (d) { return d.distance * 9.98 })
+    .attr("y", function (d, i) { return ((i * 50) % 400) + 100 })
+    .attr("width", function (d) { return d.radius / 2000 })
+    .attr("height", function (d) { return d.radius / 2000 })
     .style("filter", "url(#glow)")
-    .on("mouseover", function(event, d) {
+    .on("mouseover", function (event, d) {
       console.log(d);
       d3.select(this).attr("stroke", "blue");
       div.transition()
         .duration(200)
         .style("opacity", .9);
-      div.html("Name: "+ d.name + "\nDistance (l.y.): "+ d.distance + "\nPlanet Type: " + d.planet_type + "\nDiscovery Year: " + 
-      d.discovery_year + "\nMass (kg): " + d.mass + "\nRadius (mil): " + d.radius)
+      div.html("Name: " + d.name + "\nDistance (l.y.): " + d.distance + "\nPlanet Type: " + d.planet_type + "\nDiscovery Year: " +
+        d.discovery_year + "\nMass (kg): " + d.mass + "\nRadius (mil): " + d.radius)
         .style("left", (event.pageX) + "px")
         .style("top", (event.pageY - 28) + "px");
     })
-    .on("mouseout", function(d) {
+    .on("mouseout", function (d) {
       d3.select(this).attr("stroke", "none")
       div.transition()
         .duration(500)
@@ -113,5 +113,16 @@ d3.csv("data/habitable_exoplanets.csv").then(planets => {
     })
 });
 
+console.log(window.innerWidth)
 
+/* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
+function openNav() {
+  document.getElementById("mySidebar").style.width = "1280px";
+  document.getElementById("main").style.marginLeft = "250px";
+}
 
+/* Set the width of the sidebar to 0 and the left margin of the page content to 0 */
+function closeNav() {
+  document.getElementById("mySidebar").style.width = "0";
+  document.getElementById("main").style.marginLeft = "0";
+}
